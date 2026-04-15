@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual env
+.venv/
+venv/
+
+# Secrets
+credentials.json
+token_*.json
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Docker / Kafka (important)
+data/
+logs/
