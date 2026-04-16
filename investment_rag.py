@@ -33,13 +33,14 @@ INVESTMENT_SUBJECT_KB = [
     {
         "intent": "INVESTMENT_DEBIT",
         "examples": [
-            "amount debited from bank account towards indian clearing corp",
-            "debit from bank account for sip",
-            "nach debit for investment",
-            "ecs debit for mutual fund",
-            "auto debit for sip",
-            "bank account debited towards investment",
-            "amount debited towards clearing corporation"
+            "amountdebitedfrombankaccounttowardsindianclearingcorp",
+            "mutualfundunitscreditedsuccessfully",
+            "debitfrombankaccountforsip",
+            "nachdebitforinvestment",
+            "ecsdebitformutualfund",
+            "autodebitforsip",
+            "bankaccountdebitedtowardsinvestment",
+            "amountdebitedtowardsclearingcorporation"
     ]
     }
 ]
