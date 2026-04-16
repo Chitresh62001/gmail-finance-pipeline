@@ -1,7 +1,6 @@
 from kafka import KafkaConsumer
 import json
 import psycopg2
-from datetime import datetime
 
 consumer = KafkaConsumer(
     'transactions',
@@ -25,16 +24,21 @@ cursor = conn.cursor()
 for msg in consumer:
     data = msg.value
     print(data)
-    cursor.execute("""
-        INSERT INTO transactions (account,amount, counterparty, intent, txn_date)
-        VALUES (%s, %s, %s, %s, %s)
-    """, (
-        data.get('Account'),
-        data.get("Amount"),
-        data.get("Recipent"),
-        data.get("Intent"),
-        data.get("Date")
-    ))
+    try:
+        cursor.execute("""
+            INSERT INTO transactions (account,amount, counterparty, intent, txn_date)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (
+            data.get('Account'),
+            data.get("Amount"),
+            data.get("Recipent"),
+            data.get("Intent"),
+            data.get("Date")
+        ))
+    except psycopg2.errors.UniqueViolation as e:
+        print(e)
+    except Exception as e:
+        print(e)
 
     conn.commit()
     print("Inserted:", data)
