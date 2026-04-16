@@ -79,7 +79,25 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
                 "counterparty": name,
                 "mode": "BANK"
             }
+        
 
+    if intent == 'BANK_CREDIT':
+        bank_match = re.search(r"by\s+([a-zA-Z]+)\s+[a-zA-Z0-9.\-_]+@[a-zA-Z]+\s+([A-Z ]+?)\s+on\s+\d{2}-\d{2}-\d{2}",
+                               original_text)
+        print(bank_match)
+        if bank_match:
+            counterparty = bank_match.group(2)
+            print('THIS IS FIRST COUNTERPARTY ',counterparty)
+            mode = bank_match.group(1)
+            print('THIS IS MODE',mode)
+            counterparty = re.sub(r"\s+"," ",counterparty).strip()
+            print('THIS IS LAST COUNTERPARTY ',counterparty)
+            
+            return {
+                "amount":amount,
+                "counterparty":counterparty,
+                "mode":mode
+            }
 
     # -------------------------
     # Fallback (unknown format)
@@ -92,8 +110,7 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
 
 
 if __name__ == '__main__':
-    text = """
-Rs.1331.00 has been debited from HDFC Bank Account Number XXXXX3777 
-towards INDIAN CLEARING CORP LTD/3RCCJ8 with UMRN HDFC7030505252031675 on 13-Apr-2026.
-"""
-    extract_transaction_details(text=text ,intent= 'INVESTMENT_DEBIT')
+    text = """ DEAR CUSTOMER, RS. 25.00 is succesfully credited to your account 
+    **37777 by VPA abc.xyz-2@okicici CHITRESH VIKAS CHOPKAR on 13-04-26
+    """
+    extract_transaction_details(text=text ,intent= 'BANK_CREDIT')
