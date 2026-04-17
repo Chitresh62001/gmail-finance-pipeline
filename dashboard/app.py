@@ -16,7 +16,6 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 1440  # 24 hours
 
 # Hardcoded admin user — change the password by regenerating the hash!
-# Default password: money123
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "chitresh")
 ADMIN_PASSWORD_HASH = "$2b$12$OWtwHzwbFG1RRWcOTUZspe8i2U34DRuGWn1cdfW7wS9ll/uuMcPhG"
 
