@@ -1,0 +1,328 @@
+{
+  "transactions": [
+    {
+      "id": 15,
+      "account": "FINANCE",
+      "amount": 20.0,
+      "counterparty": "NEW NATIONAL SUPER MARKET",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-16T13:22:47"
+    },
+    {
+      "id": 1,
+      "account": "FINANCE",
+      "amount": 30.0,
+      "counterparty": "VIDYA CATERERS",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-16T09:22:28"
+    },
+    {
+      "id": 6,
+      "account": "FINANCE",
+      "amount": 142.0,
+      "counterparty": "Care Chemist",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-15T20:26:26"
+    },
+    {
+      "id": 7,
+      "account": "FINANCE",
+      "amount": 20.0,
+      "counterparty": "VIDYA CATERERS",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-15T16:21:29"
+    },
+    {
+      "id": 9,
+      "account": "FINANCE",
+      "amount": 30.0,
+      "counterparty": "VIDYA CATERERS",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-15T09:28:00"
+    },
+    {
+      "id": 52,
+      "account": "INVESTMENT",
+      "amount": 1330.93,
+      "counterparty": "JioBlackRock Nifty 50 Index Fund Direct Growth",
+      "intent": "INVESTMENT_DEBIT",
+      "txn_date": "2026-04-15T05:19:14"
+    },
+    {
+      "id": 10,
+      "account": "FINANCE",
+      "amount": 40.0,
+      "counterparty": "JAI GANESH SUPER MARKET",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-13T19:47:47"
+    },
+    {
+      "id": 11,
+      "account": "FINANCE",
+      "amount": 10.0,
+      "counterparty": "Mohammad Aslam Ansari",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-13T18:55:55"
+    },
+    {
+      "id": 12,
+      "account": "FINANCE",
+      "amount": 25.0,
+      "counterparty": "ABHISHEK VIJAY SURYAVANSHI",
+      "intent": "BANK_CREDIT",
+      "txn_date": "2026-04-13T13:09:10"
+    },
+    {
+      "id": 13,
+      "account": "FINANCE",
+      "amount": 45.0,
+      "counterparty": "NEW NATIONAL SUPER MARKET",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-13T13:09:05"
+    },
+    {
+      "id": 14,
+      "account": "FINANCE",
+      "amount": 5.0,
+      "counterparty": "SHANISHCHAR NOVELTIE",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-13T13:07:35"
+    },
+    {
+      "id": 53,
+      "account": "INVESTMENT",
+      "amount": 799.96,
+      "counterparty": "Nippon India Growth Mid Cap Fund - Direct Plan - Growth Mid Cap",
+      "intent": "INVESTMENT_DEBIT",
+      "txn_date": "2026-04-13T05:12:16"
+    },
+    {
+      "id": 26,
+      "account": "FINANCE",
+      "amount": 409.69,
+      "counterparty": "ANKW PHARMA RETAIL PRIVATE LIMITED",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-12T08:51:22"
+    },
+    {
+      "id": 28,
+      "account": "FINANCE",
+      "amount": 600.0,
+      "counterparty": "SP PR WELFARE PETROL PUMP PASHAN RD",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-10T17:55:39"
+    },
+    {
+      "id": 29,
+      "account": "FINANCE",
+      "amount": 15.0,
+      "counterparty": "VIDYA CATERERS",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-10T16:27:41"
+    },
+    {
+      "id": 27,
+      "account": "FINANCE",
+      "amount": 310.0,
+      "counterparty": "SWIGGY",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-10T15:18:14"
+    },
+    {
+      "id": 30,
+      "account": "FINANCE",
+      "amount": 30.0,
+      "counterparty": "VIDYA CATERERS",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-10T09:45:23"
+    },
+    {
+      "id": 32,
+      "account": "FINANCE",
+      "amount": 20.0,
+      "counterparty": "VIDYA CATERERS",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-09T16:11:47"
+    },
+    {
+      "id": 31,
+      "account": "FINANCE",
+      "amount": 20.0,
+      "counterparty": "VIDYA CATERERS",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-09T10:51:21"
+    },
+    {
+      "id": 33,
+      "account": "FINANCE",
+      "amount": 60.0,
+      "counterparty": "RAJWARDHAN SANJAY SHINDE",
+      "intent": "BANK_CREDIT",
+      "txn_date": "2026-04-09T09:47:02"
+    },
+    {
+      "id": 34,
+      "account": "FINANCE",
+      "amount": 90.0,
+      "counterparty": "SHREE SNACKS AND DIN",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-09T09:46:00"
+    },
+    {
+      "id": 35,
+      "account": "FINANCE",
+      "amount": 40.0,
+      "counterparty": "VIDYA CATERERS",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-08T12:40:51"
+    },
+    {
+      "id": 36,
+      "account": "FINANCE",
+      "amount": 30.0,
+      "counterparty": "VIDYA CATERERS",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-08T09:15:25"
+    },
+    {
+      "id": 54,
+      "account": "INVESTMENT",
+      "amount": 719.96,
+      "counterparty": "HDFC Nifty 50 Index Fund -Direct Plan",
+      "intent": "INVESTMENT_DEBIT",
+      "txn_date": "2026-04-08T05:22:50"
+    },
+    {
+      "id": 37,
+      "account": "FINANCE",
+      "amount": 1030.0,
+      "counterparty": "SWIGGY",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-07T19:21:04"
+    },
+    {
+      "id": 38,
+      "account": "FINANCE",
+      "amount": 20.0,
+      "counterparty": "VIDYA CATERERS",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-07T16:21:30"
+    },
+    {
+      "id": 41,
+      "account": "FINANCE",
+      "amount": 30.0,
+      "counterparty": "VIDYA CATERERS",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-07T09:20:28"
+    },
+    {
+      "id": 39,
+      "account": "FINANCE",
+      "amount": 35.0,
+      "counterparty": "ABHISHEK VIJAY SURYAVANSHI",
+      "intent": "BANK_CREDIT",
+      "txn_date": "2026-04-07T07:38:51"
+    },
+    {
+      "id": 40,
+      "account": "FINANCE",
+      "amount": 49.0,
+      "counterparty": "NEW NATIONAL SUPER MARKET",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-07T07:38:50"
+    },
+    {
+      "id": 42,
+      "account": "FINANCE",
+      "amount": 10.0,
+      "counterparty": "Mohammad Aslam Ansari",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-06T18:53:43"
+    },
+    {
+      "id": 43,
+      "account": "FINANCE",
+      "amount": 210.0,
+      "counterparty": "Swiggy",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-06T14:42:25"
+    },
+    {
+      "id": 44,
+      "account": "FINANCE",
+      "amount": 30.0,
+      "counterparty": "VIDYA CATERERS",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-06T09:37:03"
+    },
+    {
+      "id": 45,
+      "account": "FINANCE",
+      "amount": 600.0,
+      "counterparty": "SP PR WELFARE PETROL PUMP BANER RD",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-06T03:34:49"
+    },
+    {
+      "id": 46,
+      "account": "FINANCE",
+      "amount": 1084.0,
+      "counterparty": "SUHAS SURESH KAULGE",
+      "intent": "BANK_CREDIT",
+      "txn_date": "2026-04-04T21:47:05"
+    },
+    {
+      "id": 47,
+      "account": "FINANCE",
+      "amount": 1085.0,
+      "counterparty": "TUSHAR ASHOK ZADE",
+      "intent": "BANK_CREDIT",
+      "txn_date": "2026-04-04T21:47:04"
+    },
+    {
+      "id": 48,
+      "account": "FINANCE",
+      "amount": 3254.0,
+      "counterparty": "EFFINGUT BREWERIES BALEWADI PUNE",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-04T16:14:57"
+    },
+    {
+      "id": 89,
+      "account": "FINANCE",
+      "amount": 210.0,
+      "counterparty": "www.swiggy.com",
+      "intent": "CC_SPEND",
+      "txn_date": "2026-04-02T16:10:12"
+    },
+    {
+      "id": 50,
+      "account": "FINANCE",
+      "amount": 80.0,
+      "counterparty": "JAYSINGH",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-02T13:52:08"
+    },
+    {
+      "id": 51,
+      "account": "FINANCE",
+      "amount": 20.0,
+      "counterparty": "VIDYA CATERERS",
+      "intent": "UPI_DEBIT",
+      "txn_date": "2026-04-02T09:18:28"
+    }
+  ],
+  "filterOptions": {
+    "accounts": [
+      "INVESTMENT",
+      "FINANCE"
+    ],
+    "intents": [
+      "CC_SPEND",
+      "BANK_CREDIT",
+      "INVESTMENT_DEBIT",
+      "UPI_DEBIT"
+    ]
+  }
+}
