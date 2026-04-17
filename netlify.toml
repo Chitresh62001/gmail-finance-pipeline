@@ -1,0 +1,12 @@
+[build]
+  # This tells Netlify to ignore the root folder (and its requirements.txt) 
+  # and only focus on the 'frontend' directory for the build.
+  base = "frontend"
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  # This ensures that React Router works correctly on refresh
+  from = "/*"
+  to = "/index.html"
+  status = 200
