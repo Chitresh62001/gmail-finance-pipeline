@@ -18,7 +18,10 @@ function App() {
 
     const res = await fetch(`${API_URL}/api/login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      headers: { 
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'ngrok-skip-browser-warning': 'true'
+      },
       body: formData,
     })
 
@@ -46,7 +49,8 @@ function App() {
       ...options,
       headers: {
         ...options.headers,
-        Authorization: `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true'
       },
     })
     if (res.status === 401) {
