@@ -138,7 +138,7 @@ def read_account(account_key, max_results=10):
 
     return txn_data
 if __name__ == "__main__":
-    #txn_data_investment = read_account("investment", max_results=50)
+    txn_data_investment = read_account("investment", max_results=50)
     txn_data_finance = read_account("finance", max_results=50)
     #txn_data = txn_data_investment.extend(txn_data_finance)
     #print(txn_data)

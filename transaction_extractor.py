@@ -23,6 +23,13 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
     amount = None
     if intent != 'INVESTMENT_DEBIT':
         m = re.search(r"rs.?\s*([\d,]+(?:\.\d{1,2})?)", text)
+    elif intent == 'BANK_CREDIT':
+        m = re.search(r"inr\s([\d,]+(?:\.\d{1,2})?)", text)
+        ## OVERRIDE INTENT WITH SALARY_CREDIT
+        print("Match",m)
+        print("Intent : ",intent)
+        intent = 'SALARY_CREDIT'
+        print("Intent : ",intent)
     else:
         m = None
 
@@ -105,6 +112,24 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
                 "mode":mode
             }
 
+    if intent == 'SALARY_CREDIT':
+        # extract salary amount
+        salary_match = re.search(r"rs.\s+inr\s([\d,]+(?:\.\d{1,2})?)", text)
+        if salary_match:
+            salary_amount = float(salary_match.group(1).replace(",", ""))
+            data = {
+                "amount": salary_amount,
+                "counterparty": "SALARY",
+                "mode": "CREDIT",
+            }
+
+            print("Data : ",data)
+            return {
+                "amount": salary_amount,
+                "counterparty": "SALARY",
+                "mode": "CREDIT",
+            }
+        
     # -------------------------
     # Fallback (unknown format)
     # -------------------------
@@ -116,6 +141,6 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
 
 
 if __name__ == '__main__':
-    text = """ Fund name SIP amount Units credited NAV Nippon India Growth Mid Cap Fund - Direct Plan - Growth Mid Cap 799.96 0.174 4603.6735 NEXT STEPS: Order Placed:  Order placed by you on our platform Order Processed by the Exchange:  This will take up to one working day Mutual Funds Units Credited:  This takes up to T+3 (Trade + 3 working days) Important next step: For the next SIP amount to be deducted automatically from your bank account, complete the mandate process (if you haven?t already) by following these steps: How to automate Mutual Fund SIPs?  Thank you for choosing us for your investment needs! Happy Investing, Team Upstox Follow us on: Available on: Copyright © 2025 Upstox, All rights reserved. Sunshine Tower, 30th Floor, Senapati Bapat Marg, Dadar West, Mumbai 400013, Maharashtra, India.  The information in this email is only for consumption by the client and such material should not be redistributed. About Us  |   Help Center  |  Disclosures and Disclaimer  | Don't like these emails?  Unsubscribe
+    text = """DEAR CUSTOMER, GREETINGS FROM HDFC BANK ! YOUR SALARY OF RS. INR 60000.00 has been credited to your account ENDING X3777 on 27-MAR-2026 from CDAC-CDAC"
     """
-    extract_transaction_details(text=text ,intent= 'INVESTMENT_DEBIT')
+    extract_transaction_details(text=text ,intent= 'BANK_CREDIT')
