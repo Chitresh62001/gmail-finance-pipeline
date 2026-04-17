@@ -20,3 +20,7 @@ token_*.json
 # Docker / Kafka (important)
 data/
 logs/
+
+# airflow
+airflow/*.db-journal
+airflow/*.db
