@@ -20,14 +20,15 @@ FINANCE_SUBJECT_KB = [
     {
         "intent": "CC_SPEND",
         "examples": [
-            "rsdebitedviacreditcard"
+            "rsdebitedviacreditcard",
+            "apaymentwasmadeusingyouryourcreditcard"
         ]
     },
     {
         "intent": "CC_PAYMENT",
         "examples": [
-            "Credit card payment received",
-            "Credit card bill payment successful"
+            "creditcardpaymentreceived",
+            "creditcardbillpaymentsuccessful"
         ]
     },
     {
@@ -39,8 +40,8 @@ FINANCE_SUBJECT_KB = [
     {
         "intent": "BANK_DEBIT",
         "examples": [
-            "Amount debited from your bank account",
-            "IMPS debit alert"
+            "amountdebitedfromyourbankaccount",
+            "impsdebialert"
         ]
     }
 ]

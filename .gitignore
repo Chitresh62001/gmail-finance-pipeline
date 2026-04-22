@@ -24,3 +24,4 @@ logs/
 # airflow
 airflow/*.db-journal
 airflow/*.db
+airflow/logs
