@@ -91,13 +91,8 @@ def read_account(account_key, max_results=10):
     acc = ACCOUNTS[account_key]
     creds = authenticate(acc["token"])
     service = build("gmail", "v1", credentials=creds)
-    # Start of current month
-    start_of_month = datetime.now().replace(day=1).strftime("%Y/%m/%d")
-
-    # Current timestamp (now)
-    now_ts = int(time.time())
-
-    query = f"{acc['query']} after:{start_of_month} before:{now_ts}"
+    # Fetch messages from the last 24 hours
+    query = f"{acc['query']} newer_than:1d"
     results = service.users().messages().list(
         userId="me",
         q=query,
