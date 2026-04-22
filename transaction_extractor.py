@@ -61,9 +61,10 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
     # -------------------------
     if intent == 'CC_SPEND':
         cc_match = re.search(
-                    r"towards\s+(.+?)\s+on\s+\d{1,2}\s+[A-Za-z]+(?:,\s*\d{4})?(?:\s+at\s+\d{2}:\d{2}:\d{2})?",
-                    original_text
-)
+        r"towards\s+(.+?)\s+on\s+([^\n]+)",
+        original_text,
+        re.IGNORECASE
+    )
 
         if cc_match:
             merchant = cc_match.group(1)
