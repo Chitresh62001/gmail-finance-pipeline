@@ -21,7 +21,7 @@ FINANCE_SUBJECT_KB = [
         "intent": "CC_SPEND",
         "examples": [
             "rsdebitedviacreditcard",
-            "apaymentwasmadeusingyouryourcreditcard"
+            "apaymentwasmadeusingyourcreditcard"
         ]
     },
     {
