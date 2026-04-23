@@ -110,12 +110,12 @@ def read_account(account_key, max_results=50):
         subject = headers.get("Subject", "")
         body = get_email_body(msg_data=msg_data)
         intent = acc["rag"](subject)
-        if intent == 'CC_SPEND':
-            print("Amount Spent",intent)
         clean_text = html_to_text(body)
         text = subject + ' ' + clean_text
+
         if intent != 'UNKNOWN':
             transaction_details = extract_transaction_details(text,intent)
+            print(transaction_details)
             data = {"Account": account_key.upper(),
                 "From": headers.get("From"),
                 "Subject": subject,
@@ -128,7 +128,7 @@ def read_account(account_key, max_results=50):
             print("Sending to Kafka:", data)
 
         # ✅ SEND EACH MESSAGE
-            #send_transaction(data)
+            send_transaction(data)
 
             #txn_data.append(data)
 

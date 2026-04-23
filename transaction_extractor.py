@@ -4,6 +4,15 @@ import re
 from typing import Optional, Dict
 
 
+def clean_merchant(name):
+    name = name.lower()
+
+    # remove domain parts
+    name = re.sub(r"www\.", "", name)
+    name = re.sub(r"\.com.*", "", name)
+
+    return name.upper()
+
 def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[str]]:
     """
     Unified extractor for:
@@ -51,7 +60,7 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
                 "mode": "UPI",
                 "intent" : intent
             }
-        '''else:
+        else:
             upi_match = re.search(
             r"to\s+(?:VPA\s+)?([a-zA-Z0-9.\-_]+@[a-zA-Z]+)\s+([A-Z ]+?)\s+on\s+\d{2}-\d{2}-\d{2}",
             original_text,
@@ -65,21 +74,24 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
                     "counterparty": name,
                     "mode": "UPI",
                     "intent" : "CC_CREDIT"
-                }'''
+                }
 
     # -------------------------
     # Credit card merchant
     # Pattern: towards <MERCHANT> on <date>
     # -------------------------
     if intent == 'CC_SPEND':
+        original_text = re.sub(r"[,\n]+", " ", original_text)
+        original_text = re.sub(r"\s+", " ", original_text)
         cc_match = re.search(
                     r"towards\s+(.+?)\s+on\s+\d{1,2}\s+[A-Za-z]+(?:,\s*\d{4})?(?:\s+at\s+\d{2}:\d{2}:\d{2})?",
                     original_text
-)
+                    )
 
         if cc_match:
             merchant = cc_match.group(1)
             merchant = re.sub(r"\s+", " ", merchant).strip()
+            merchant = clean_merchant(merchant)
             return {
                 "amount": amount,
                 "counterparty": merchant,
@@ -140,36 +152,14 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
             }
 
 
-    if intent == 'CC_CREDIT':
-        original_text = re.sub(r"\s+", " ", original_text)
-
-        upi_match = re.search(
-            r"to\s+(?:VPA\s+)?([a-zA-Z0-9.\-_]+@[a-zA-Z]+)\s+([A-Z ]+?)\s+on\s+\d{2}-\d{2}-\d{2}",
-            original_text,
-            re.IGNORECASE
-        )
-
-        if upi_match:
-            name = upi_match.group(2)
-            name = re.sub(r"\s+", " ", name).strip()
-            data = {
-                "amount": amount,
-                "counterparty": name,
-                "mode": "UPI"
-            }
-            print("Data : ",data)
-            return {
-                "amount": amount,
-                "counterparty": name,
-                "mode": "UPI"
-            }
     # -------------------------
     # Fallback (unknown format)
     # -------------------------
     return {
         "amount": amount,
         "counterparty": None,
-        "mode": None
+        "mode": None,
+        "intent" : intent
     }
 
 
