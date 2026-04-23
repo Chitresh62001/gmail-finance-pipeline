@@ -85,7 +85,7 @@ def get_email_body(msg_data):
 
 def html_to_text(html):
     soup = BeautifulSoup(html, "html.parser")
-    return soup.get_text(separator=" ")
+    return soup.get_text(separator=",")
 
 def read_account(account_key, max_results=50):
     acc = ACCOUNTS[account_key]
@@ -108,9 +108,10 @@ def read_account(account_key, max_results=50):
 #metadataHeaders=["From", "Subject", "Date"]
         headers = {h["name"]: h["value"] for h in msg_data["payload"]["headers"]}
         subject = headers.get("Subject", "")
-
-        intent = acc["rag"](subject)
         body = get_email_body(msg_data=msg_data)
+        intent = acc["rag"](subject)
+        if intent == 'CC_SPEND':
+            print("Amount Spent",intent)
         clean_text = html_to_text(body)
         text = subject + ' ' + clean_text
         if intent != 'UNKNOWN':
@@ -118,7 +119,7 @@ def read_account(account_key, max_results=50):
             data = {"Account": account_key.upper(),
                 "From": headers.get("From"),
                 "Subject": subject,
-                "Intent": intent,
+                "Intent": transaction_details['intent'],
                 "Date": parse_gmail_date(headers.get("Date")),
                 "Amount": transaction_details['amount'],
                 "Recipent": transaction_details['counterparty']
@@ -127,7 +128,7 @@ def read_account(account_key, max_results=50):
             print("Sending to Kafka:", data)
 
         # ✅ SEND EACH MESSAGE
-            send_transaction(data)
+            #send_transaction(data)
 
             #txn_data.append(data)
 
