@@ -87,7 +87,7 @@ def html_to_text(html):
     soup = BeautifulSoup(html, "html.parser")
     return soup.get_text(separator=" ")
 
-def read_account(account_key, max_results=10):
+def read_account(account_key, max_results=50):
     acc = ACCOUNTS[account_key]
     creds = authenticate(acc["token"])
     service = build("gmail", "v1", credentials=creds)
@@ -132,6 +132,7 @@ def read_account(account_key, max_results=10):
             #txn_data.append(data)
 
     return txn_data
+
 if __name__ == "__main__":
     txn_data_investment = read_account("investment", max_results=50)
     txn_data_finance = read_account("finance", max_results=50)
