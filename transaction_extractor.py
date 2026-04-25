@@ -151,7 +151,19 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
                 "intent" : intent
             }
 
-
+    if intent == 'CC_CREDIT':
+        # extract refund amount
+        original_text = re.sub(r"[,\n]+", " ", original_text)
+        original_text = re.sub(r"\s+", " ", original_text)
+        refund_match = re.search(r"rs\.?\s([\d,]+\.\d{1,2}).*?Merchant:\s([A-Za-z ]+)\s+date", original_text,re.IGNORECASE)
+        if refund_match:
+            refund_amount = float(refund_match.group(1).replace(",", ""))
+            return {
+                "amount": refund_amount,
+                "counterparty": refund_match.group(2),
+                "mode": "CREDIT",
+                "intent" : intent
+            }
     # -------------------------
     # Fallback (unknown format)
     # -------------------------
@@ -164,8 +176,10 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
 
 
 if __name__ == '__main__':
-    text = """Rs.20000 has been debited from account 3333
-    to VPA pzcreditcard.44444444@hdfcbank
-    PZCREDITCARD on 23-04-26
+    text = """
+    A transaction reversal of Rs. 5676.00 has been initiated to your HDFC Bank Credit 
+    Card ending 0000
+    From Merchant: NIKE INDIA
+    Date Time : 24 Apr,2026 at 20:16:35
     """
-    extract_transaction_details(text=text ,intent= 'UPI_DEBIT')
+    extract_transaction_details(text=text ,intent= 'CC_CREDIT')

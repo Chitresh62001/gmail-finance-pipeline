@@ -113,7 +113,7 @@ def get_filter_options(current_user: str = Depends(get_current_user)):
     
     try:
         cursor.execute("SELECT DISTINCT account FROM transactions WHERE account IS NOT NULL")
-        accounts = [row['account'] for row in cursor.fetchall()]
+        accounts = [row['account'].replace('_',' ') for row in cursor.fetchall()]
         
         cursor.execute("SELECT DISTINCT intent FROM transactions WHERE intent IS NOT NULL")
         intents = [row['intent'].replace('_',' ') for row in cursor.fetchall()]
@@ -148,7 +148,7 @@ def get_transactions(
     
     if account:
         query += " AND account = %s"
-        params.append(account)
+        params.append(account.replace(' ', '_'))
     if counterparty:
         query += " AND counterparty ILIKE %s"
         params.append(f"%{counterparty}%")
@@ -193,6 +193,11 @@ def get_transactions(
     try:
         cursor.execute(query, params)
         rows = cursor.fetchall()
+        for row in rows:
+            if row.get('intent'):
+                row['intent'] = row['intent'].replace('_', ' ')
+            if row.get('account'):
+                row['account'] = row['account'].replace('_', ' ')
         return rows
     except Exception as e:
         print(f"Error executing query: {e}")

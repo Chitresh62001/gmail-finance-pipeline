@@ -104,7 +104,7 @@ export default function Dashboard() {
         <div className="header">
           <div className="header-left">
             <h1>Money Watcher</h1>
-            <p>Welcome back, {username} 👋</p>
+            <p>Welcome back, {(username || '').replace(/_/g, ' ')} 👋</p>
           </div>
           <button className="logout-btn" onClick={logout}>Sign Out</button>
         </div>

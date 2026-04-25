@@ -37,7 +37,7 @@ export default function TransactionList({ transactions, loading }) {
                 </div>
                 <div className="txn-info">
                   <div className="txn-name">{t.counterparty}</div>
-                  <div className="txn-meta">{dateStr} · {t.intent} · {t.account}</div>
+                  <div className="txn-meta">{dateStr} · {(t.intent || '').replace(/_/g, ' ')} · {(t.account || '').replace(/_/g, ' ')}</div>
                 </div>
                 <div className={`txn-amount ${rawAmount < 0 ? 'd' : 'c'}`}>
                   ₹{Number(rawAmount).toFixed(2)}

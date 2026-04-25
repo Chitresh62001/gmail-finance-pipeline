@@ -22,20 +22,28 @@ const catColors = {
   default: '#888',
 }
 
-const dynamicPalette = [
-  '#c70000ff', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD',
-  '#D4A5A5', '#9B59B6', '#3498DB', '#E67E22', '#1ABC9C',
-  '#F1C40F', '#E74C3C', '#2ECC71', '#95A5A6', '#8E44AD',
+const redShades = [
+  '#FF6B6B', '#FA5252', '#E03131', '#C92A2A', '#F03E3E', '#FF8787', '#FFA8A8',
+]
+const greenShades = [
+  '#51CF66', '#40C057', '#37B24D', '#2F9E44', '#2B8A3E', '#69DB7C', '#8CE99A',
 ]
 
-function getCatColor(category) {
-  const cat = category.toLowerCase()
-  if (catColors[cat] && catColors[cat] !== '#888') return catColors[cat]
+function getCatColor(category, isDebit = true) {
+  const cat = category.toLowerCase().replace(/ /g, '_')
+  const palette = isDebit ? redShades : greenShades
+
+  if (catColors[cat] && catColors[cat] !== '#888') {
+    // If it's a known color in catColors, we can still use it or blend it. 
+    // But the user asked for shades of red/green.
+    // Let's stick to the palettes for consistency as requested.
+  }
+
   let hash = 0
   for (let i = 0; i < cat.length; i++) {
     hash = cat.charCodeAt(i) + ((hash << 5) - hash)
   }
-  return dynamicPalette[Math.abs(hash) % dynamicPalette.length]
+  return palette[Math.abs(hash) % palette.length]
 }
 
 // ─── Component ───────────────────────────────────
@@ -51,9 +59,10 @@ export default function Charts({ transactions, isDebitTxn }) {
     const cat = t.intent.toLowerCase()
     spendsByIntent[cat] = (spendsByIntent[cat] || 0) + Math.abs(t.amount)
   })
-  const donutLabels = Object.keys(spendsByIntent)
-  const donutData = donutLabels.map(l => spendsByIntent[l])
-  const donutColors = donutLabels.map(l => getCatColor(l))
+  const donutLabelsRaw = Object.keys(spendsByIntent)
+  const donutLabels = donutLabelsRaw.map(l => l.replace(/_/g, ' '))
+  const donutData = donutLabelsRaw.map(l => spendsByIntent[l])
+  const donutColors = donutLabelsRaw.map(l => getCatColor(l, true))
 
   // Bar data
   const spendsByDate = {}
