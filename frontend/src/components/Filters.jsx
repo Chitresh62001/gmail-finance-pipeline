@@ -4,6 +4,8 @@ export default function Filters({
   counterparty, setCounterparty,
   amountOp, setAmountOp,
   amountVal, setAmountVal,
+  startDate, setStartDate,
+  endDate, setEndDate,
   filterOptions,
   hasActiveFilters,
   clearFilters,
@@ -45,6 +47,23 @@ export default function Filters({
           value={amountVal}
           onChange={e => setAmountVal(e.target.value)}
           style={{ width: '100px' }}
+        />
+      </div>
+
+      <div className="filter-group">
+        <label htmlFor="filter-start-date" style={{ fontSize: '0.85rem', alignSelf: 'center' }}>From:</label>
+        <input
+          id="filter-start-date"
+          type="date"
+          value={startDate}
+          onChange={e => setStartDate(e.target.value)}
+        />
+        <label htmlFor="filter-end-date" style={{ fontSize: '0.85rem', alignSelf: 'center' }}>To:</label>
+        <input
+          id="filter-end-date"
+          type="date"
+          value={endDate}
+          onChange={e => setEndDate(e.target.value)}
         />
       </div>
 

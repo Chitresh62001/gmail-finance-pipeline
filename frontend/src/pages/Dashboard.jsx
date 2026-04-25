@@ -19,6 +19,8 @@ export default function Dashboard() {
   const [intent, setIntent] = useState('')
   const [amountOp, setAmountOp] = useState('gt')
   const [amountVal, setAmountVal] = useState('')
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
 
   // Fetch filter options on mount
   useEffect(() => {
@@ -49,6 +51,8 @@ export default function Dashboard() {
           params.append('amount_op', amountOp)
           params.append('amount_val', amountVal)
         }
+        if (startDate) params.append('start_date', startDate)
+        if (endDate) params.append('end_date', endDate)
 
         const response = await authFetch(`${apiUrl}/api/transactions?${params.toString()}`)
         if (!response.ok) throw new Error('Network response was not ok')
@@ -65,7 +69,7 @@ export default function Dashboard() {
 
     const timeoutId = setTimeout(fetchTransactions, 300)
     return () => clearTimeout(timeoutId)
-  }, [account, counterparty, intent, amountOp, amountVal])
+  }, [account, counterparty, intent, amountOp, amountVal, startDate, endDate])
 
   const clearFilters = () => {
     setAccount('')
@@ -73,9 +77,11 @@ export default function Dashboard() {
     setIntent('')
     setAmountVal('')
     setAmountOp('gt')
+    setStartDate('')
+    setEndDate('')
   }
 
-  const hasActiveFilters = account || counterparty || intent || amountVal
+  const hasActiveFilters = account || counterparty || intent || amountVal || startDate || endDate
 
   // Helper to classify debit vs credit
   const isDebitTxn = (t) => {
@@ -109,6 +115,8 @@ export default function Dashboard() {
           counterparty={counterparty} setCounterparty={setCounterparty}
           amountOp={amountOp} setAmountOp={setAmountOp}
           amountVal={amountVal} setAmountVal={setAmountVal}
+          startDate={startDate} setStartDate={setStartDate}
+          endDate={endDate} setEndDate={setEndDate}
           filterOptions={filterOptions}
           hasActiveFilters={hasActiveFilters}
           clearFilters={clearFilters}

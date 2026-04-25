@@ -112,10 +112,10 @@ def get_filter_options(current_user: str = Depends(get_current_user)):
     
     try:
         cursor.execute("SELECT DISTINCT account FROM transactions WHERE account IS NOT NULL")
-        accounts = [row['account'] for row in cursor.fetchall()]
+        accounts = [row['account'].split('_') for row in cursor.fetchall()]
         
         cursor.execute("SELECT DISTINCT intent FROM transactions WHERE intent IS NOT NULL")
-        intents = [row['intent'] for row in cursor.fetchall()]
+        intents = [row['intent'].split('_') for row in cursor.fetchall()]
         
         return {
             "accounts": accounts,
@@ -135,6 +135,8 @@ def get_transactions(
     intent: Optional[str] = Query(None, description="Filter by intent"),
     amount_op: Optional[str] = Query(None, description="Amount operator (gt, lt, eq)"),
     amount_val: Optional[float] = Query(None, description="Amount value"),
+    start_date: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
+    end_date: Optional[str] = Query(None, description="End date (YYYY-MM-DD)"),
     current_user: str = Depends(get_current_user)
 ):
     conn = get_db_connection()
@@ -163,6 +165,11 @@ def get_transactions(
         elif amount_op == "eq":
             query += " AND ABS(amount) = %s"
             params.append(amount_val)
+    
+    if start_date and end_date:
+        query += " AND txn_date BETWEEN %s AND %s"
+        params.append(start_date)
+        params.append(end_date)
             
     query += " ORDER BY txn_date DESC"
     
