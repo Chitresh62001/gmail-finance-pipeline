@@ -28,7 +28,8 @@ FINANCE_SUBJECT_KB = [
         "intent": "CC_CREDIT",
         "examples": [
             "creditcardpaymentreceived",
-            "creditcardbillpaymentsuccessful"
+            "creditcardbillpaymentsuccessful",
+            "arefundwasprocessedtoyourcreditcardfromthemerchant"
         ]
     },
     {

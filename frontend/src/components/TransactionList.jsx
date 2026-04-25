@@ -8,7 +8,7 @@ const catEmoji = {
   groceries: '🛒', food: '🍱', pharmacy: '💊', services: '👤', received: '💰', default: '📝',
 }
 
-export default function TransactionList({ transactions, loading, isDebitTxn }) {
+export default function TransactionList({ transactions, loading }) {
   if (loading) {
     return (
       <div className="txn-panel">
@@ -26,11 +26,9 @@ export default function TransactionList({ transactions, loading, isDebitTxn }) {
       ) : (
         <div>
           {transactions.map(t => {
-            const dateStr = new Date(t.txn_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
-            const isDebit = isDebitTxn(t)
-            const sign = isDebit ? '−' : '+'
-            const absAmount = Math.abs(t.amount).toFixed(2)
-            const intentKey = t.intent.toLowerCase()
+            const dateStr = String(t.txn_date).split('T')[0] // Use raw API date just slicing off time if present
+            const rawAmount = t.amount
+            const intentKey = (t.intent || '').toLowerCase()
 
             return (
               <div className="txn-row" key={t.id}>
@@ -41,8 +39,8 @@ export default function TransactionList({ transactions, loading, isDebitTxn }) {
                   <div className="txn-name">{t.counterparty}</div>
                   <div className="txn-meta">{dateStr} · {t.intent} · {t.account}</div>
                 </div>
-                <div className={`txn-amount ${isDebit ? 'd' : 'c'}`}>
-                  {sign}₹{absAmount}
+                <div className={`txn-amount ${rawAmount < 0 ? 'd' : 'c'}`}>
+                  ₹{Number(rawAmount).toFixed(2)}
                 </div>
               </div>
             )

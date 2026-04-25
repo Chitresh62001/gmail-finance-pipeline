@@ -137,7 +137,6 @@ export default function Dashboard() {
         <TransactionList
           transactions={transactions}
           loading={loading}
-          isDebitTxn={isDebitTxn}
         />
       </div>
     </div>

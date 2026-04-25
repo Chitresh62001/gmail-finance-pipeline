@@ -7,6 +7,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from pydantic import BaseModel
 from datetime import datetime, timedelta
+import calendar
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
@@ -112,10 +113,10 @@ def get_filter_options(current_user: str = Depends(get_current_user)):
     
     try:
         cursor.execute("SELECT DISTINCT account FROM transactions WHERE account IS NOT NULL")
-        accounts = [row['account'].split('_') for row in cursor.fetchall()]
+        accounts = [row['account'] for row in cursor.fetchall()]
         
         cursor.execute("SELECT DISTINCT intent FROM transactions WHERE intent IS NOT NULL")
-        intents = [row['intent'].split('_') for row in cursor.fetchall()]
+        intents = [row['intent'].replace('_',' ') for row in cursor.fetchall()]
         
         return {
             "accounts": accounts,
@@ -153,7 +154,7 @@ def get_transactions(
         params.append(f"%{counterparty}%")
     if intent:
         query += " AND intent = %s"
-        params.append(intent)
+        params.append(intent.replace(' ', '_'))
         
     if amount_op and amount_val is not None:
         if amount_op == "gt":
@@ -177,16 +178,12 @@ def get_transactions(
 
     elif start_date or end_date:
         if start_date is not None and end_date is None:
-            start_date = start_date.strftime("%Y-%m-%d")
             end_date = datetime.now().strftime("%Y-%m-%d")
         elif start_date is None and end_date is not None:
             cursor.execute("SELECT MIN(txn_date) FROM transactions")
-            start_date = cursor.fetchone()
-            end_date = end_date.strftime("%Y-%m-%d")
-        else:
-            start_date = start_date.strftime("%Y-%m-%d")
-            end_date = end_date.strftime("%Y-%m-%d")
-                
+            res = cursor.fetchone()
+            start_date = res['min'].strftime("%Y-%m-%d") if (res and res['min']) else "1970-01-01"
+        
         query += " AND txn_date BETWEEN %s AND %s"
         params.append(start_date)
         params.append(end_date)
@@ -206,4 +203,4 @@ def get_transactions(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
