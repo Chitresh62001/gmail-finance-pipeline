@@ -133,10 +133,10 @@ def get_transactions(
     account: Optional[str] = Query(None, description="Filter by account"),
     counterparty: Optional[str] = Query(None, description="Filter by counterparty"),
     intent: Optional[str] = Query(None, description="Filter by intent"),
-    amount_op: Optional[str] = Query(None, description="Amount operator (gt, lt, eq)"),
+    amount_op: Optional[str] = Query(None, description="Amount operator"),
     amount_val: Optional[float] = Query(None, description="Amount value"),
-    start_date: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
-    end_date: Optional[str] = Query(None, description="End date (YYYY-MM-DD)"),
+    start_date: Optional[str] = Query(None, description="Start date"),
+    end_date: Optional[str] = Query(None, description="End date"),
     current_user: str = Depends(get_current_user)
 ):
     conn = get_db_connection()
@@ -166,7 +166,27 @@ def get_transactions(
             query += " AND ABS(amount) = %s"
             params.append(amount_val)
     
-    if start_date and end_date:
+    if start_date is None and end_date is None:
+        start_date = datetime.now().replace(day=1).strftime("%Y-%m-%d")
+        now = datetime.now()
+        last_day = calendar.monthrange(now.year, now.month)[1]
+        end_date = datetime.now().replace(day=last_day).strftime("%Y-%m-%d")
+        query += " AND txn_date BETWEEN %s AND %s"
+        params.append(start_date)
+        params.append(end_date)
+
+    elif start_date or end_date:
+        if start_date is not None and end_date is None:
+            start_date = start_date.strftime("%Y-%m-%d")
+            end_date = datetime.now().strftime("%Y-%m-%d")
+        elif start_date is None and end_date is not None:
+            cursor.execute("SELECT MIN(txn_date) FROM transactions")
+            start_date = cursor.fetchone()
+            end_date = end_date.strftime("%Y-%m-%d")
+        else:
+            start_date = start_date.strftime("%Y-%m-%d")
+            end_date = end_date.strftime("%Y-%m-%d")
+                
         query += " AND txn_date BETWEEN %s AND %s"
         params.append(start_date)
         params.append(end_date)
