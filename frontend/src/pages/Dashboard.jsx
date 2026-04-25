@@ -5,6 +5,7 @@ import SummaryCards from '../components/SummaryCards'
 import Charts from '../components/Charts'
 import TransactionList from '../components/TransactionList'
 import BlurText from '../components/reactbits/BlurText'
+import WetGlass from '../components/reactbits/WetGlass'
 
 export default function Dashboard() {
   const { authFetch, apiUrl, logout, username } = useContext(AuthContext)
@@ -112,6 +113,7 @@ export default function Dashboard() {
   )
 
   return (
+    <WetGlass>
     <div className="min-h-screen p-4 md:p-8 relative"
       style={{
         background: `
@@ -132,7 +134,7 @@ export default function Dashboard() {
             </p>
           </div>
           <button
-            className="btn btn-ghost btn-sm border border-white/10 hover:bg-error/15 hover:text-error hover:border-error/30 transition-all duration-300"
+            className="btn btn-ghost btn-sm border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] hover:bg-error/15 hover:text-error hover:border-error/50 transition-all duration-300"
             onClick={logout}
           >
             Sign Out
@@ -187,7 +189,7 @@ export default function Dashboard() {
           <div className="flex justify-center mt-4 mb-8 animate-fade-in-up">
             <div className="join shadow-lg">
               <button
-                className="join-item btn btn-sm bg-base-100/60 border-white/10 hover:bg-base-100"
+                className="join-item btn btn-sm bg-base-100/60 border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] hover:bg-base-100"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(p => p - 1)}
               >
@@ -199,7 +201,7 @@ export default function Dashboard() {
                   className={`join-item btn btn-sm ${
                     page === currentPage
                       ? 'btn-primary text-white'
-                      : 'bg-base-100/60 border-white/10 hover:bg-base-100'
+                      : 'bg-base-100/60 border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] hover:bg-base-100'
                   }`}
                   onClick={() => setCurrentPage(page)}
                 >
@@ -207,7 +209,7 @@ export default function Dashboard() {
                 </button>
               ))}
               <button
-                className="join-item btn btn-sm bg-base-100/60 border-white/10 hover:bg-base-100"
+                className="join-item btn btn-sm bg-base-100/60 border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] hover:bg-base-100"
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage(p => p + 1)}
               >
@@ -225,5 +227,6 @@ export default function Dashboard() {
         )}
       </div>
     </div>
+    </WetGlass>
   )
 }

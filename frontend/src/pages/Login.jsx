@@ -36,7 +36,7 @@ export default function Login() {
       />
       
       <form
-        className="card bg-base-100/60 backdrop-blur-2xl border border-white/10 shadow-2xl w-full max-w-md animate-fade-in-up"
+        className="card bg-base-200 rounded-2xl border-[0.5px] border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.1)] w-full max-w-md animate-fade-in-up"
         onSubmit={handleSubmit}
       >
         <div className="card-body gap-6">
@@ -66,7 +66,7 @@ export default function Login() {
               id="username"
               type="text"
               placeholder="Enter your username"
-              className="input input-bordered bg-base-100/40 border-white/10 focus:border-primary focus:ring-2 focus:ring-primary/20 w-full"
+              className="input input-bordered bg-base-100/40 border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] focus:border-white/60 focus:ring-0 focus:shadow-[0_0_15px_rgba(255,255,255,0.2)] focus:outline-none w-full rounded-2xl"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -85,7 +85,7 @@ export default function Login() {
               id="password"
               type="password"
               placeholder="Enter your password"
-              className="input input-bordered bg-base-100/40 border-white/10 focus:border-primary focus:ring-2 focus:ring-primary/20 w-full"
+              className="input input-bordered bg-base-100/40 border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] focus:border-white/60 focus:ring-0 focus:shadow-[0_0_15px_rgba(255,255,255,0.2)] focus:outline-none w-full rounded-2xl"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -94,7 +94,7 @@ export default function Login() {
 
           {/* Submit */}
           <button
-            className="btn btn-primary w-full text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300"
+            className="btn btn-primary w-full text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 rounded-2xl"
             type="submit"
             disabled={loading}
           >
@@ -110,7 +110,7 @@ export default function Login() {
 
           {/* Error */}
           {error && (
-            <div className="alert alert-error bg-error/10 border-error/20 text-error text-sm">
+            <div className="alert alert-error bg-error/10 border-[0.5px] border-error/50 shadow-[0_0_8px_rgba(248,113,113,0.2)] text-error text-sm rounded-2xl">
               <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>

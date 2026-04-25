@@ -65,7 +65,7 @@ export default function Charts({ transactions, isDebitTxn }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-[1fr_1.7fr] gap-3 mb-6 stagger-children">
       {/* Donut Chart */}
-      <div className="card bg-base-100/60 backdrop-blur-xl border border-white/8 shadow-lg hover:shadow-xl transition-all duration-300">
+      <div className="card bg-base-200 rounded-2xl border-[0.5px] border-white/30 shadow-[0_0_12px_rgba(255,255,255,0.08)] transition-all duration-300">
         <div className="card-body p-5">
           <h3 className="text-xs font-semibold uppercase tracking-wider text-base-content/50 mb-3">
             By Intent (Spend)
@@ -107,7 +107,7 @@ export default function Charts({ transactions, isDebitTxn }) {
       </div>
 
       {/* Bar Chart */}
-      <div className="card bg-base-100/60 backdrop-blur-xl border border-white/8 shadow-lg hover:shadow-xl transition-all duration-300">
+      <div className="card bg-base-200 rounded-2xl border-[0.5px] border-white/30 shadow-[0_0_12px_rgba(255,255,255,0.08)] transition-all duration-300">
         <div className="card-body p-5">
           <h3 className="text-xs font-semibold uppercase tracking-wider text-base-content/50 mb-3">
             Daily Cash Flow

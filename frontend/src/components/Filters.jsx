@@ -15,7 +15,7 @@ export default function Filters({
       {/* Account */}
       <select
         id="filter-account"
-        className="select select-sm select-bordered bg-base-100/40 border-white/10 focus:border-primary text-sm min-w-[130px]"
+        className="select select-sm select-bordered bg-base-200 border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] focus:border-white/60 focus:outline-none focus:ring-0 focus:shadow-[0_0_15px_rgba(255,255,255,0.2)] text-sm min-w-[130px] rounded-xl"
         value={account}
         onChange={e => setAccount(e.target.value)}
       >
@@ -28,7 +28,7 @@ export default function Filters({
       {/* Intent */}
       <select
         id="filter-intent"
-        className="select select-sm select-bordered bg-base-100/40 border-white/10 focus:border-primary text-sm min-w-[130px]"
+        className="select select-sm select-bordered bg-base-200 border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] focus:border-white/60 focus:outline-none focus:ring-0 focus:shadow-[0_0_15px_rgba(255,255,255,0.2)] text-sm min-w-[130px] rounded-xl"
         value={intent}
         onChange={e => setIntent(e.target.value)}
       >
@@ -43,7 +43,7 @@ export default function Filters({
         id="filter-counterparty"
         type="text"
         placeholder="Counterparty..."
-        className="input input-sm input-bordered bg-base-100/40 border-white/10 focus:border-primary text-sm w-[160px]"
+        className="input input-sm input-bordered bg-base-200 border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] focus:border-white/60 focus:outline-none focus:ring-0 focus:shadow-[0_0_15px_rgba(255,255,255,0.2)] text-sm w-[160px] rounded-xl"
         value={counterparty}
         onChange={e => setCounterparty(e.target.value)}
       />
@@ -52,7 +52,7 @@ export default function Filters({
       <div className="flex items-center gap-1.5">
         <select
           id="filter-amount-op"
-          className="select select-sm select-bordered bg-base-100/40 border-white/10 text-sm w-[55px]"
+          className="select select-sm select-bordered bg-base-200 border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] text-sm w-[55px] rounded-xl"
           value={amountOp}
           onChange={e => setAmountOp(e.target.value)}
         >
@@ -64,7 +64,7 @@ export default function Filters({
           id="filter-amount-val"
           type="number"
           placeholder="Amt..."
-          className="input input-sm input-bordered bg-base-100/40 border-white/10 focus:border-primary text-sm w-[90px]"
+          className="input input-sm input-bordered bg-base-200 border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] focus:border-white/60 focus:outline-none focus:ring-0 focus:shadow-[0_0_15px_rgba(255,255,255,0.2)] text-sm w-[90px] rounded-xl"
           value={amountVal}
           onChange={e => setAmountVal(e.target.value)}
         />
@@ -76,7 +76,7 @@ export default function Filters({
         <input
           id="filter-start-date"
           type="date"
-          className="input input-sm input-bordered bg-base-100/40 border-white/10 focus:border-primary text-sm"
+          className="input input-sm input-bordered bg-base-200 border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] focus:border-white/60 focus:outline-none focus:ring-0 focus:shadow-[0_0_15px_rgba(255,255,255,0.2)] text-sm rounded-xl"
           value={startDate}
           onChange={e => setStartDate(e.target.value)}
         />
@@ -84,7 +84,7 @@ export default function Filters({
         <input
           id="filter-end-date"
           type="date"
-          className="input input-sm input-bordered bg-base-100/40 border-white/10 focus:border-primary text-sm"
+          className="input input-sm input-bordered bg-base-200 border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] focus:border-white/60 focus:outline-none focus:ring-0 focus:shadow-[0_0_15px_rgba(255,255,255,0.2)] text-sm rounded-xl"
           value={endDate}
           onChange={e => setEndDate(e.target.value)}
         />
@@ -94,7 +94,7 @@ export default function Filters({
       {hasActiveFilters && (
         <button
           id="btn-clear-filters"
-          className="btn btn-sm btn-ghost border border-white/10 hover:bg-base-100 text-sm"
+          className="btn btn-sm btn-ghost border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] hover:bg-base-200 text-sm rounded-xl"
           onClick={clearFilters}
         >
           ✕ Clear

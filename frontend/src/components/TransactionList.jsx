@@ -17,7 +17,7 @@ function getIconBg(intentKey) {
 export default function TransactionList({ transactions, loading, isDebitTxn }) {
   if (loading) {
     return (
-      <div className="card bg-base-100/60 backdrop-blur-xl border border-white/8 shadow-lg">
+      <div className="card bg-base-200 rounded-2xl border-[0.5px] border-white/30 shadow-[0_0_12px_rgba(255,255,255,0.08)]">
         <div className="card-body p-5">
           <h3 className="text-xs font-semibold uppercase tracking-wider text-base-content/50 mb-3">
             Transactions
@@ -32,7 +32,7 @@ export default function TransactionList({ transactions, loading, isDebitTxn }) {
   }
 
   return (
-    <div className="card bg-base-100/60 backdrop-blur-xl border border-white/8 shadow-lg animate-fade-in-up">
+    <div className="card bg-base-200 rounded-2xl border-[0.5px] border-white/30 shadow-[0_0_12px_rgba(255,255,255,0.08)] animate-fade-in-up">
       <div className="card-body p-5">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-base-content/50 mb-3">
           Transactions
