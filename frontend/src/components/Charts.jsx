@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import {
   Chart as ChartJS,
   ArcElement,
@@ -13,15 +12,6 @@ import { Doughnut, Bar } from 'react-chartjs-2'
 ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
 // ─── Color Utilities ─────────────────────────────
-const catColors = {
-  groceries: '#378ADD',
-  food: '#1D9E75',
-  pharmacy: '#D85A30',
-  services: '#BA7517',
-  received: '#639922',
-  default: '#888',
-}
-
 const redShades = [
   '#FF6B6B', '#FA5252', '#E03131', '#C92A2A', '#F03E3E', '#FF8787', '#FFA8A8',
 ]
@@ -32,10 +22,6 @@ const greenShades = [
 function getCatColor(category, isDebit = true) {
   const cat = category.toLowerCase().replace(/ /g, '_')
   const palette = isDebit ? redShades : greenShades
-
-  if (catColors[cat] && catColors[cat] !== '#888') {
-  }
-
   let hash = 0
   for (let i = 0; i < cat.length; i++) {
     hash = cat.charCodeAt(i) + ((hash << 5) - hash)
@@ -45,8 +31,7 @@ function getCatColor(category, isDebit = true) {
 
 // ─── Component ───────────────────────────────────
 export default function Charts({ transactions, isDebitTxn }) {
-  // Always dark theme
-  const tickColor = '#5a5a54'
+  const tickColor = '#6b7280'
   const gridColor = 'rgba(255,255,255,.06)'
   const bgColor = 'transparent'
 
@@ -78,87 +63,99 @@ export default function Charts({ transactions, isDebitTxn }) {
   const receiveBarData = sortedDates.map(d => receivesByDate[d] || 0)
 
   return (
-    <div className="charts-row">
+    <div className="grid grid-cols-1 md:grid-cols-[1fr_1.7fr] gap-3 mb-6 stagger-children">
       {/* Donut Chart */}
-      <div className="panel">
-        <div className="panel-title">By Intent (Spend)</div>
-        <div style={{ position: 'relative', height: '170px' }}>
-          <Doughnut
-            data={{
-              labels: donutLabels,
-              datasets: [{
-                data: donutData,
-                backgroundColor: donutColors,
-                borderWidth: 2,
-                borderColor: bgColor,
-                hoverOffset: 5,
-              }],
-            }}
-            options={{
-              responsive: true,
-              maintainAspectRatio: false,
-              cutout: '68%',
-              plugins: {
-                legend: { display: false },
-                tooltip: { callbacks: { label: ctx => ` ₹${ctx.raw.toFixed(2)}` } },
-              },
-            }}
-          />
-        </div>
-        {/* Legend */}
-        <div className="legend">
-          {donutLabelsRaw.map((catRaw, idx) => (
-            <div key={catRaw} className="leg-row">
-              <span className="leg-dot" style={{ background: donutColors[idx] }}></span>
-              <span className="leg-name">{donutLabels[idx]}</span>
-              <span className="leg-amt">₹{spendsByIntent[catRaw].toFixed(2)}</span>
-            </div>
-          ))}
+      <div className="card bg-base-100/60 backdrop-blur-xl border border-white/8 shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="card-body p-5">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-base-content/50 mb-3">
+            By Intent (Spend)
+          </h3>
+          <div className="relative h-[170px]">
+            <Doughnut
+              data={{
+                labels: donutLabels,
+                datasets: [{
+                  data: donutData,
+                  backgroundColor: donutColors,
+                  borderWidth: 2,
+                  borderColor: bgColor,
+                  hoverOffset: 5,
+                }],
+              }}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '68%',
+                plugins: {
+                  legend: { display: false },
+                  tooltip: { callbacks: { label: ctx => ` ₹${ctx.raw.toFixed(2)}` } },
+                },
+              }}
+            />
+          </div>
+          {/* Legend */}
+          <div className="flex flex-col gap-2 mt-3">
+            {donutLabelsRaw.map((catRaw, idx) => (
+              <div key={catRaw} className="flex items-center gap-2.5 text-xs text-base-content/60 py-1 px-1.5 rounded-md hover:bg-white/5 transition-colors">
+                <span className="leg-dot" style={{ background: donutColors[idx] }} />
+                <span className="flex-1 capitalize">{donutLabels[idx]}</span>
+                <span className="font-semibold text-base-content text-sm">₹{spendsByIntent[catRaw].toFixed(2)}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Bar Chart */}
-      <div className="panel">
-        <div className="panel-title">Daily Cash Flow</div>
-        <div style={{ position: 'relative', height: '230px' }}>
-          <Bar
-            data={{
-              labels: sortedDates,
-              datasets: [
-                {
-                  label: 'Spent',
-                  data: spendBarData,
-                  backgroundColor: '#f87171',
-                  borderRadius: 4,
+      <div className="card bg-base-100/60 backdrop-blur-xl border border-white/8 shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="card-body p-5">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-base-content/50 mb-3">
+            Daily Cash Flow
+          </h3>
+          <div className="relative h-[230px]">
+            <Bar
+              data={{
+                labels: sortedDates,
+                datasets: [
+                  {
+                    label: 'Spent',
+                    data: spendBarData,
+                    backgroundColor: '#f87171',
+                    borderRadius: 4,
+                  },
+                  {
+                    label: 'Received',
+                    data: receiveBarData,
+                    backgroundColor: '#34d399',
+                    borderRadius: 4,
+                  },
+                ],
+              }}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: true,
+                    position: 'top',
+                    labels: { color: tickColor, font: { size: 11 } },
+                  },
+                  tooltip: { callbacks: { label: ctx => ` ₹${ctx.raw.toFixed(2)}` } },
                 },
-                {
-                  label: 'Received',
-                  data: receiveBarData,
-                  backgroundColor: '#34d399',
-                  borderRadius: 4,
+                scales: {
+                  x: {
+                    grid: { display: false },
+                    ticks: { color: tickColor, font: { size: 12 } },
+                  },
+                  y: {
+                    grid: { color: gridColor },
+                    ticks: { color: tickColor, font: { size: 12 }, callback: v => '₹' + v },
+                    beginAtZero: true,
+                  },
                 },
-              ],
-            }}
-            options={{
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: { display: true, position: 'top', labels: { color: tickColor, font: { size: 11 } } },
-                tooltip: { callbacks: { label: ctx => ` ₹${ctx.raw.toFixed(2)}` } },
-              },
-              scales: {
-                x: {
-                  grid: { display: false },
-                  ticks: { color: tickColor, font: { size: 12 } },
-                },
-                y: {
-                  grid: { color: gridColor },
-                  ticks: { color: tickColor, font: { size: 12 }, callback: v => '₹' + v },
-                  beginAtZero: true,
-                },
-              },
-            }}
-          />
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

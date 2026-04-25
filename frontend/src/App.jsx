@@ -1,7 +1,8 @@
-import { useState, useEffect, createContext } from 'react'
+import { useState, createContext } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import ClickSpark from './components/reactbits/ClickSpark'
 
 export const AuthContext = createContext(null)
 
@@ -62,18 +63,22 @@ function App() {
 
   return (
     <AuthContext.Provider value={{ token, username, login, logout, authFetch, apiUrl: API_URL }}>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/login"
-            element={token ? <Navigate to="/" replace /> : <Login />}
-          />
-          <Route
-            path="/"
-            element={token ? <Dashboard /> : <Navigate to="/login" replace />}
-          />
-        </Routes>
-      </BrowserRouter>
+      <ClickSpark sparkColor="#a78bfa" sparkCount={10} sparkSize={6} duration={500}>
+        <div data-theme="dark" className="min-h-screen bg-base-300">
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/login"
+                element={token ? <Navigate to="/" replace /> : <Login />}
+              />
+              <Route
+                path="/"
+                element={token ? <Dashboard /> : <Navigate to="/login" replace />}
+              />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </ClickSpark>
     </AuthContext.Provider>
   )
 }
