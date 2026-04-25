@@ -8,7 +8,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js'
-import { Bar } from 'react-chartjs-2'
+import { Doughnut, Bar } from 'react-chartjs-2'
 
 ChartJS.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
@@ -34,9 +34,6 @@ function getCatColor(category, isDebit = true) {
   const palette = isDebit ? redShades : greenShades
 
   if (catColors[cat] && catColors[cat] !== '#888') {
-    // If it's a known color in catColors, we can still use it or blend it. 
-    // But the user asked for shades of red/green.
-    // Let's stick to the palettes for consistency as requested.
   }
 
   let hash = 0
@@ -82,42 +79,41 @@ export default function Charts({ transactions, isDebitTxn }) {
 
   return (
     <div className="charts-row">
-      {/* Bar Chart (Replaced Donut) */}
+      {/* Donut Chart */}
       <div className="panel">
         <div className="panel-title">By Intent (Spend)</div>
         <div style={{ position: 'relative', height: '170px' }}>
-          <Bar
+          <Doughnut
             data={{
               labels: donutLabels,
               datasets: [{
-                label: 'Spent',
                 data: donutData,
                 backgroundColor: donutColors,
-                borderWidth: 1,
+                borderWidth: 2,
                 borderColor: bgColor,
+                hoverOffset: 5,
               }],
             }}
             options={{
-              indexAxis: 'y',
               responsive: true,
               maintainAspectRatio: false,
+              cutout: '68%',
               plugins: {
                 legend: { display: false },
                 tooltip: { callbacks: { label: ctx => ` ₹${ctx.raw.toFixed(2)}` } },
               },
-              scales: {
-                x: {
-                  grid: { color: gridColor },
-                  ticks: { color: tickColor, font: { size: 11 }, callback: v => '₹' + v },
-                  beginAtZero: true,
-                },
-                y: {
-                  grid: { display: false },
-                  ticks: { color: tickColor, font: { size: 11 } },
-                },
-              },
             }}
           />
+        </div>
+        {/* Legend */}
+        <div className="legend">
+          {donutLabelsRaw.map((catRaw, idx) => (
+            <div key={catRaw} className="leg-row">
+              <span className="leg-dot" style={{ background: donutColors[idx] }}></span>
+              <span className="leg-name">{donutLabels[idx]}</span>
+              <span className="leg-amt">₹{spendsByIntent[catRaw].toFixed(2)}</span>
+            </div>
+          ))}
         </div>
       </div>
 
