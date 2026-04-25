@@ -8,7 +8,7 @@ const catEmoji = {
   groceries: '🛒', food: '🍱', pharmacy: '💊', services: '👤', received: '💰', default: '📝',
 }
 
-export default function TransactionList({ transactions, loading }) {
+export default function TransactionList({ transactions, loading, isDebitTxn }) {
   if (loading) {
     return (
       <div className="txn-panel">
@@ -39,7 +39,7 @@ export default function TransactionList({ transactions, loading }) {
                   <div className="txn-name">{t.counterparty}</div>
                   <div className="txn-meta">{dateStr} · {(t.intent || '').replace(/_/g, ' ')} · {(t.account || '').replace(/_/g, ' ')}</div>
                 </div>
-                <div className={`txn-amount ${rawAmount < 0 ? 'd' : 'c'}`}>
+                <div className={`txn-amount ${isDebitTxn(t) ? 'd' : 'c'}`}>
                   ₹{Number(rawAmount).toFixed(2)}
                 </div>
               </div>
