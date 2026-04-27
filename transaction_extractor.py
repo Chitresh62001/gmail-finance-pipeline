@@ -47,13 +47,19 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
     # -------------------------
     if intent == 'UPI_DEBIT':
         upi_match = re.search(
-            r"to\s+[a-z0-9.\-_]+@[a-z]+\s+([A-Za-z ]+?)\s+on\s+\d{1,2}",
+            r"to\s+[a-z0-9.\-_]+@[a-z]+\s+([A-Za-z0-9.\-_ ]+?)\s+on\s+\d{1,2}",
             original_text
         )
         if upi_match:
             name = upi_match.group(1)
             name = re.sub(r"\s+", " ", name).strip()
-
+            data = {
+                "amount": amount,
+                "counterparty": name,
+                "mode": "UPI",
+                "intent" : intent
+            }
+            print(data)
             return {
                 "amount": amount,
                 "counterparty": name,
@@ -177,9 +183,8 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
 
 if __name__ == '__main__':
     text = """
-    A transaction reversal of Rs. 5676.00 has been initiated to your HDFC Bank Credit 
-    Card ending 0000
-    From Merchant: NIKE INDIA
-    Date Time : 24 Apr,2026 at 20:16:35
+    Rs.150.00 has been debited from 
+    your HDFC Bank RuPay Credit Card XX5755 to 
+    paytmqr6vilu1@ptys Mr. SURAJ SANJAY KATE on 26-04-26
     """
-    extract_transaction_details(text=text ,intent= 'CC_CREDIT')
+    extract_transaction_details(text=text ,intent= 'UPI_DEBIT')
