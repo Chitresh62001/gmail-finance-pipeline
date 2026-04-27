@@ -53,13 +53,7 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
         if upi_match:
             name = upi_match.group(1)
             name = re.sub(r"\s+", " ", name).strip()
-            data = {
-                "amount": amount,
-                "counterparty": name,
-                "mode": "UPI",
-                "intent" : intent
-            }
-            print(data)
+            
             return {
                 "amount": amount,
                 "counterparty": name,
