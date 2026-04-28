@@ -1,4 +1,4 @@
-# finance_rag.py
+# investment_rag.py
 
 import re
 import faiss
@@ -8,44 +8,43 @@ from sentence_transformers import SentenceTransformer
 CONFIDENCE_THRESHOLD = 0.95
 
 # -----------------------------
-# Finance Subject Knowledge Base
+# Investment Subject Knowledge Base
 # -----------------------------
-FINANCE_SUBJECT_KB = [
+INVESTMENT_SUBJECT_KB = [
     {
-        "intent": "UPI_DEBIT",
+        "intent": "FUNDS_ADDED",
         "examples": [
-            "youhavedoneaupitxncheckdetails"
+            "fundsaddedsuccessfully"
+
         ]
     },
     {
-        "intent": "CC_SPEND",
+        "intent": "ORDER_EXECUTED",
         "examples": [
-            "rsdebitedviacreditcard",
-            "apaymentwasmadeusingyourcreditcard"
+            "mutualfundordercompleted"
         ]
     },
     {
-        "intent": "CC_CREDIT",
+        "intent": "FUNDS_WITHDRAWN",
         "examples": [
-            "creditcardpaymentreceived",
-            "creditcardbillpaymentsuccessful",
-            "arefundwasprocessedtoyourcreditcardfromthemerchant"
+            "withdrawalsuccessful"
         ]
     },
     {
-        "intent": "BANK_CREDIT",
+        "intent": "INVESTMENT_DEBIT",
         "examples": [
-            "viewaccountupdateforyourhdfcbankac"
-        ]
-    },
-    {
-        "intent": "BANK_DEBIT",
-        "examples": [
-            "amountdebitedfromyourbankaccount",
-            "impsdebialert"
-        ]
+            "amountdebitedfrombankaccounttowardsindianclearingcorp",
+            "mutualfundunitscreditedsuccessfully",
+            "debitfrombankaccountforsip",
+            "nachdebitforinvestment",
+            "ecsdebitformutualfund",
+            "autodebitforsip",
+            "bankaccountdebitedtowardsinvestment",
+            "amountdebitedtowardsclearingcorporation"
+    ]
     }
 ]
+
 # -----------------------------
 # Normalization
 # -----------------------------
@@ -57,10 +56,10 @@ def normalize_subject(text: str) -> str:
 # -----------------------------
 # Model & Index
 # -----------------------------
-_model = SentenceTransformer("all-MiniLM-L6-v2")
+_model = SentenceTransformer("all-MiniLM-L6-v2", local_files_only=True)
 
 _docs, _meta = [], []
-for item in FINANCE_SUBJECT_KB:
+for item in INVESTMENT_SUBJECT_KB:
     for ex in item["examples"]:
         _docs.append(ex)
         _meta.append(item["intent"])
@@ -74,7 +73,7 @@ _index.add(_embeddings)
 # -----------------------------
 # Public API
 # -----------------------------
-def finance_rag_decision(subject: str) -> str:
+def investment_rag_decision(subject: str) -> str:
     subject = normalize_subject(subject)
 
     query_emb = _model.encode([subject], convert_to_numpy=True)
@@ -95,7 +94,7 @@ def rebuild_index():
     global _index, _docs, _meta
 
     _docs, _meta = [], []
-    for item in FINANCE_SUBJECT_KB:
+    for item in INVESTMENT_SUBJECT_KB:
         for ex in item["examples"]:
             _docs.append(ex)
             _meta.append(item["intent"])
@@ -106,6 +105,7 @@ def rebuild_index():
     _index = faiss.IndexFlatIP(embeddings.shape[1])
     _index.add(embeddings)
 
-    print(f"✅ Finance index rebuilt with {len(_docs)} vectors")
+    print(f"✅ Investment index rebuilt with {len(_docs)} vectors")
+
 
 #rebuild_index()

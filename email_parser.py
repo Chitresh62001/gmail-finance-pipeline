@@ -4,8 +4,9 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from transaction_extractor import extract_transaction_details
-from investment_rag import investment_rag_decision
-from finance_rag import finance_rag_decision
+from rags.investment_rag import investment_rag_decision
+from rags.finance_rag import finance_rag_decision
+from rags.categories_rag import categories_rag_decision
 from producer import send_transaction
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -115,11 +116,12 @@ def read_account(account_key, max_results=50):
 
         if intent != 'UNKNOWN':
             transaction_details = extract_transaction_details(text,intent)
-            print(transaction_details)
+            #print(transaction_details)
             data = {"Account": account_key.upper(),
                 "From": headers.get("From"),
                 "Subject": subject,
                 "Intent": transaction_details['intent'],
+                "Category": categories_rag_decision(transaction_details['counterparty']),
                 "Date": parse_gmail_date(headers.get("Date")),
                 "Amount": transaction_details['amount'],
                 "Recipent": transaction_details['counterparty']

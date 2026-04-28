@@ -26,13 +26,14 @@ for msg in consumer:
     print(data)
     try:
         cursor.execute("""
-            INSERT INTO transactions (account,amount, counterparty, intent, txn_date)
+            INSERT INTO transactions (account,amount, counterparty, intent, Category,txn_date)
             VALUES (%s, %s, %s, %s, %s)
         """, (
             data.get('Account'),
             data.get("Amount"),
             data.get("Recipent"),
             data.get("Intent"),
+            data.get("Category"),
             data.get("Date")
         ))
     except psycopg2.errors.UniqueViolation as e:
