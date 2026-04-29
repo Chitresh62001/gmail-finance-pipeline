@@ -102,26 +102,51 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
     if intent == 'INVESTMENT_DEBIT':
         clean_text = re.sub(r"\s+", " ", original_text)
 
-        # extract numbers (amount, units, nav)
-        numbers = re.findall(r"\d+\.\d+", clean_text)
+        # Try to find fund name near NAV or amount
+        # Pattern: <Fund Name> ... RS <Amount>
+        fund_name = None
+        
+        # Try finding fund name before amount
+        m = re.search(r"([A-Za-z0-9][A-Za-z0-9 \-&]+(?:Fund|Plan|Growth|Equity|Nifty|Sensex)[A-Za-z0-9 \-&]*?)\s+(?:Rs|Inr|Amount)", original_text, re.IGNORECASE)
+        if m:
+            fund_name = m.group(1).strip()
+        
+        # Fallback to the NAV pattern
+        if not fund_name:
+            numbers = re.findall(r"\d+\.\d+", clean_text)
+            if numbers:
+                amount = float(numbers[0])
+                fund_match = re.search(
+                    r"(?:NAV|Fund|Scheme)\s+([A-Za-z0-9 \-]+?)\s+" + re.escape(str(numbers[0])),
+                    clean_text, re.IGNORECASE
+                )
+                if fund_match:
+                    fund_name = fund_match.group(1).strip()
 
-        if len(numbers) >= 3:
-            amount = float(numbers[0])
+        # If still None, look for anything that looks like a Fund name in the whole text
+        if not fund_name:
+            m = re.search(r"([A-Za-z0-9 \-&]+(?:Index Fund|Direct Plan|Growth Plan|Nifty 50|Sensex|Midcap|Smallcap)[A-Za-z0-9 \-&]*)", original_text, re.IGNORECASE)
+            if m:
+                fund_name = m.group(1).strip()
 
-            # fund name = text before amount
-            fund_match = re.search(
-                r"NAV\s+([A-Za-z0-9 \-]+?)\s+" + re.escape(numbers[0]),
-                clean_text
-            )
+        return {
+            "amount": amount,
+            "counterparty": fund_name if fund_name else "UPSTOX INVESTMENT",
+            "mode": "INVESTMENT",
+            "intent" : intent
+        }
 
-            fund_name = fund_match.group(1).strip() if fund_match else None
-
-            return {
-                "amount": amount,
-                "counterparty": fund_name,
-                "mode": "INVESTMENT",
-                "intent" : intent
-            }
+    if intent == 'FUNDS_ADDED':
+        # Pattern: Rs. <Amount> ... added successfully
+        m = re.search(r"rs.?\s*([\d,]+(?:\.\d{1,2})?)", text)
+        if m:
+            amount = float(m.group(1).replace(",", ""))
+        return {
+            "amount": amount,
+            "counterparty": "UPSTOX WALLET",
+            "mode": "TRANSFER",
+            "intent": intent
+        }
 
     if intent == 'BANK_CREDIT':
         bank_match = re.search(

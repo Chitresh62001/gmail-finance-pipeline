@@ -92,8 +92,8 @@ def read_account(account_key, max_results=50):
     acc = ACCOUNTS[account_key]
     creds = authenticate(acc["token"])
     service = build("gmail", "v1", credentials=creds)
-    # Fetch messages from the last 24 hours
-    query = f"{acc['query']} newer_than:5d"
+    # Fetch messages since April 1st
+    query = f"{acc['query']} after:2026/04/01"
     results = service.users().messages().list(
         userId="me",
         q=query,
@@ -115,17 +115,22 @@ def read_account(account_key, max_results=50):
         text = subject + ' ' + clean_text
 
         if intent != 'UNKNOWN':
-            transaction_details = extract_transaction_details(text,intent)
-            #print(transaction_details)
-            data = {"Account": account_key.upper(),
+            transaction_details = extract_transaction_details(text, intent)
+            if not transaction_details:
+                continue
+                
+            counterparty = transaction_details.get('counterparty') or "Unknown"
+            
+            data = {
+                "Account": account_key.upper(),
                 "From": headers.get("From"),
                 "Subject": subject,
-                "Intent": transaction_details['intent'],
-                "Category": categories_rag_decision(transaction_details['counterparty']),
+                "Intent": transaction_details.get('intent', 'UNKNOWN'),
+                "Category": categories_rag_decision(counterparty),
                 "Date": parse_gmail_date(headers.get("Date")),
-                "Amount": transaction_details['amount'],
-                "Recipent": transaction_details['counterparty']
-        }
+                "Amount": transaction_details.get('amount', 0),
+                "Recipent": counterparty
+            }
 
             print("Sending to Kafka:", data)
 
@@ -137,8 +142,8 @@ def read_account(account_key, max_results=50):
     return txn_data
 
 if __name__ == "__main__":
-    txn_data_investment = read_account("investment", max_results=50)
-    txn_data_finance = read_account("finance", max_results=50)
+    txn_data_investment = read_account("investment", max_results=500)
+    txn_data_finance = read_account("finance", max_results=500)
     #txn_data = txn_data_investment.extend(txn_data_finance)
     #print(txn_data)
     #print("Sending to Kafka:", txn_data)

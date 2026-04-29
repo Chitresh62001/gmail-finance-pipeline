@@ -72,7 +72,7 @@ export default function TransactionList({ transactions, loading, isDebitTxn }) {
                         {t.counterparty}
                       </div>
                       <div className="text-xs text-base-content/40 mt-0.5 capitalize">
-                        {dateStr} · {(t.intent || '').replace(/_/g, ' ')} · {(t.account || '').replace(/_/g, ' ')}
+                        {dateStr} · {(t.intent || '').replace(/_/g, ' ')} · {(t.category || '').replace(/_/g, ' ')} · {(t.account || '').replace(/_/g, ' ')}
                       </div>
                     </div>
 

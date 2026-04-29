@@ -1,6 +1,7 @@
 export default function Filters({
   account, setAccount,
   intent, setIntent,
+  category, setCategory,
   counterparty, setCounterparty,
   amountOp, setAmountOp,
   amountVal, setAmountVal,
@@ -35,6 +36,19 @@ export default function Filters({
         <option value="">All Intents</option>
         {filterOptions.intents.map(i => (
           <option key={i} value={i}>{i}</option>
+        ))}
+      </select>
+
+      {/* Category */}
+      <select
+        id="filter-category"
+        className="select select-sm select-bordered bg-base-200 border-[0.5px] border-white/30 shadow-[0_0_8px_rgba(255,255,255,0.08)] focus:border-white/60 focus:outline-none focus:ring-0 focus:shadow-[0_0_15px_rgba(255,255,255,0.2)] text-sm min-w-[130px] rounded-xl"
+        value={category}
+        onChange={e => setCategory(e.target.value)}
+      >
+        <option value="">All Categories</option>
+        {filterOptions.categories && filterOptions.categories.map(cat => (
+          <option key={cat} value={cat}>{cat}</option>
         ))}
       </select>
 

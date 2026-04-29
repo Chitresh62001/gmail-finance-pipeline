@@ -11,7 +11,7 @@ export default function Dashboard() {
   const { authFetch, apiUrl, logout, username } = useContext(AuthContext)
 
   const [transactions, setTransactions] = useState([])
-  const [filterOptions, setFilterOptions] = useState({ accounts: [], intents: [] })
+  const [filterOptions, setFilterOptions] = useState({ accounts: [], intents: [], categories: [] })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -19,6 +19,7 @@ export default function Dashboard() {
   const [account, setAccount] = useState('')
   const [counterparty, setCounterparty] = useState('')
   const [intent, setIntent] = useState('')
+  const [category, setCategory] = useState('')
   const [amountOp, setAmountOp] = useState('gt')
   const [amountVal, setAmountVal] = useState('')
   const [startDate, setStartDate] = useState('')
@@ -53,6 +54,7 @@ export default function Dashboard() {
         if (account) params.append('account', account)
         if (counterparty) params.append('counterparty', counterparty)
         if (intent) params.append('intent', intent)
+        if (category) params.append('category', category)
         if (amountVal && !isNaN(amountVal)) {
           params.append('amount_op', amountOp)
           params.append('amount_val', amountVal)
@@ -76,19 +78,20 @@ export default function Dashboard() {
 
     const timeoutId = setTimeout(fetchTransactions, 300)
     return () => clearTimeout(timeoutId)
-  }, [account, counterparty, intent, amountOp, amountVal, startDate, endDate])
+  }, [account, counterparty, intent, category, amountOp, amountVal, startDate, endDate])
 
   const clearFilters = () => {
     setAccount('')
     setCounterparty('')
     setIntent('')
+    setCategory('')
     setAmountVal('')
     setAmountOp('gt')
     setStartDate('')
     setEndDate('')
   }
 
-  const hasActiveFilters = account || counterparty || intent || amountVal || startDate || endDate
+  const hasActiveFilters = account || counterparty || intent || category || amountVal || startDate || endDate
 
   // Helper to classify debit vs credit
   const isDebitTxn = (t) => {
@@ -145,6 +148,7 @@ export default function Dashboard() {
         <Filters
           account={account} setAccount={setAccount}
           intent={intent} setIntent={setIntent}
+          category={category} setCategory={setCategory}
           counterparty={counterparty} setCounterparty={setCounterparty}
           amountOp={amountOp} setAmountOp={setAmountOp}
           amountVal={amountVal} setAmountVal={setAmountVal}

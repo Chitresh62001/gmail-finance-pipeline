@@ -88,6 +88,7 @@ class Transaction(BaseModel):
     amount: float
     counterparty: str
     intent: str
+    category: str
     txn_date: datetime
 
 # ─── Auth Endpoint ────────────────────────────────────────────
@@ -118,9 +119,13 @@ def get_filter_options(current_user: str = Depends(get_current_user)):
         cursor.execute("SELECT DISTINCT intent FROM transactions WHERE intent IS NOT NULL")
         intents = [row['intent'].replace('_',' ') for row in cursor.fetchall()]
         
+        cursor.execute("SELECT DISTINCT category FROM transactions WHERE category IS NOT NULL")
+        categories = [row['category'].replace('_',' ') for row in cursor.fetchall()]
+        
         return {
             "accounts": accounts,
-            "intents": intents
+            "intents": intents,
+            "categories": categories
         }
     except Exception as e:
         print(f"Error fetching filter options: {e}")
@@ -134,6 +139,7 @@ def get_transactions(
     account: Optional[str] = Query(None, description="Filter by account"),
     counterparty: Optional[str] = Query(None, description="Filter by counterparty"),
     intent: Optional[str] = Query(None, description="Filter by intent"),
+    category: Optional[str] = Query(None, description="Filter by category"),
     amount_op: Optional[str] = Query(None, description="Amount operator"),
     amount_val: Optional[float] = Query(None, description="Amount value"),
     start_date: Optional[str] = Query(None, description="Start date"),
@@ -143,7 +149,7 @@ def get_transactions(
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
     
-    query = "SELECT id, account, amount, counterparty, intent, txn_date FROM transactions WHERE 1=1"
+    query = "SELECT id, account, amount, counterparty, intent, category, txn_date FROM transactions WHERE 1=1"
     params = []
     
     if account:
@@ -155,6 +161,9 @@ def get_transactions(
     if intent:
         query += " AND intent = %s"
         params.append(intent.replace(' ', '_'))
+    if category:
+        query += " AND category = %s"
+        params.append(category.replace(' ', '_'))
         
     if amount_op and amount_val is not None:
         if amount_op == "gt":

@@ -26,8 +26,8 @@ for msg in consumer:
     print(data)
     try:
         cursor.execute("""
-            INSERT INTO transactions (account,amount, counterparty, intent, Category,txn_date)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO transactions (account,amount, counterparty, intent, category,txn_date)
+            VALUES (%s, %s, %s, %s, %s, %s)
         """, (
             data.get('Account'),
             data.get("Amount"),

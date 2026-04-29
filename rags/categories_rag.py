@@ -5,7 +5,7 @@ import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-CONFIDENCE_THRESHOLD = 0.40
+CONFIDENCE_THRESHOLD = 0.70
 
 # -----------------------------
 # Finance Subject Knowledge Base
@@ -14,130 +14,60 @@ FINANCE_SUBJECT_KB = [
     {
         "intent": "FOOD",
         "examples": [
-            "caterers",
-            "caters",
-            "food",
-            "restaurants",
-            "hospitality",
-            "fastfood",
-            "foodcourt",
-            "cafe",
-            "restaurant",
-            "snacks",
-            "snack",
-            "dining"
-        ]
-    },
-    {
-        "intent": "GROCERIES",
-        "examples": [
-            "grocery",
-            "groceries",
-            "kirana",
-            "kiranastore",
-            "supermarket",
-            "vegetables",
-            "fruits",
-            "dairy",
-            "grocerystore",
-            "dmart",
-            "reliancefresh",
-            "reliance"
+            "caterers", "caters", "food", "restaurants", "hospitality", "fastfood", 
+            "foodcourt", "cafe", "restaurant", "snacks", "snack", "dining",
+            "dining at restaurant", "food and beverages", "eating out",
+            "zomato", "swiggy", "mcdonalds", "dominos", "kfc", "starbucks", "subway",
+            "pizzahut", "barbequenation", "haldiram"
         ]
     },
     {
         "intent": "ENTERTAINMENT",
         "examples": [
-            "movies",
-            "movie",
-            "cinema",
-            "cinemas",
-            "theatre",
-            "theatres",
-            "entertainment",
-            "entertainment_hub",
-            "fun",
-            "games",
-            "gaming",
-            "gaming_zone",
-            "funzone",
-            "fun_zone",
-            "pvr",
-            "inox",
-            "cinemax",
-            "multiplex",
-            "bookmyshow"
+            "movies", "movie", "cinema", "cinemas", "theatre", "theatres", "entertainment", 
+            "entertainment_hub", "fun", "games", "gaming", "gaming_zone", "funzone", 
+            "fun_zone", "pvr", "inox", "cinemax", "multiplex", "bookmyshow",
+            "movie tickets", "watching a movie", "entertainment and fun",
+            "netflix", "primevideo", "hotstar", "disneyplus", "sonyliv", "zee5", "spotify"
         ]
     },
     {
         "intent": "TRANSPORT",
         "examples": [
-            "transport",
-            "transportation",
-            "travel",
-            "travelling",
-            "ride",
-            "rideshare",
-            "cab",
-            "taxi",
-            "metro",
-            "bus",
-            "train",
-            "flight",
-            "airline",
-            "petrol",
-            "fuel",
-            "uber",
-            "ola",
-            "airport",
-            "indigo",
-            "vistara",
-            "airindia",
-            "airport",
-            "petroleum",
-            "petrolium",
-            "petrolbunk",
-            "bike"
+            "transport", "transportation", "travel", "travelling", "ride", "rideshare", 
+            "cab", "taxi", "metro", "bus", "train", "flight", "airline", "petrol", 
+            "fuel", "uber", "ola", "airport", "indigo", "vistara", "airindia", "airport", 
+            "petroleum", "petrolium", "petrolbunk", "bike",
+            "booking a cab", "flight tickets", "refueling car at petrol pump", "train tickets",
+            "booking a ride",
+            "makemytrip", "goibibo", "yatra", "irctc", "redbus", "rapido", "nmmc", "bestbus",
+            "hpcl", "bpcl", "indianoil", "nayara", "bharatpetroleum"
         ]
     },
     {
         "intent": "BILL_PAYMENT",
         "examples": [
-            "billpayment",
-            "billpay",
-            "utilitybill",
-            "utilitybillpayment",
-            "electricitybill",
-            "electricitybillpayment",
-            "electricity",
-            "waterbill",
-            "waterbillpayment",
-            "gasbill",
-            "gasbillpayment",
-            "phonebill",
-            "phonebillpayment",
-            "mobilebill",
-            "mobilebillpayment",
-            "internetbill",
-            "internetbillpayment",
-            "dthbill",
-            "dthbillpayment",
-            "mobilebill",
-            "mobilebillpayment"
+            "billpayment", "billpay", "utilitybill", "utilitybillpayment", "electricitybill", 
+            "electricitybillpayment", "electricity", "waterbill", "waterbillpayment", 
+            "gasbill", "gasbillpayment", "phonebill", "phonebillpayment", "mobilebill", 
+            "mobilebillpayment", "internetbill", "internetbillpayment", "dthbill", 
+            "dthbillpayment", "mobilebill", "mobilebillpayment",
+            "electricity bill payment", "utility bill payment", "paying the water bill",
+            "recharging mobile", "broadband bill",
+            "pzelectricity", "paytmelectricity", "bdelectricity", "billdesk", "payu",
+            "ccavenue", "razorpay", "payzapp", "mobikwik", "freecharge", "jio", "airtel",
+            "vi", "bsnl", "bescom", "mahavitaran", "adaniapp", "tata sky"
         ]
     },
-        {
+    {
         "intent": "MUTUAL_FUND_SIP",
         "examples": [
-            "nifty50indexfund",
-            "midcapfund",
-            "directplan",
-            "growthplan",
-            "hybridfund",
-            "nifty50",
-            "sensex",
-            "midcap",
-            "smallcap"
+            "nifty50indexfund", "midcapfund", "directplan", "growthplan", "hybridfund", 
+            "nifty50", "sensex", "midcap", "smallcap",
+            "mutual fund sip installment", "investing in index fund", "sip deduction",
+            "zerodha", "upstox", "groww", "angelone", "icicidirect", "hdfcsec",
+            "jio blackrock", "blackrock", "sbi mutual fund", "nippon india", "axis mutual",
+            "quant mutual", "parag parikh"
         ]
     }
 ]
@@ -145,6 +75,8 @@ FINANCE_SUBJECT_KB = [
 # Normalization
 # -----------------------------
 def normalize_subject(text: str) -> str:
+    if not text:
+        return ""
     text = text.lower()
     # Keep alphanumeric and spaces, but remove everything else
     text = re.sub(r'[^a-z0-9\s]', '', text)
@@ -221,5 +153,4 @@ def rebuild_index():
 
 if __name__ == "__main__":
     #rebuild_index()
-    print(f"Result: {categories_rag_decision('HDFC Nifty 50 Index Fund -Direct Plan')}")
-    
+    print(f"Result: {categories_rag_decision('Mr. SURAJ SANJAY KATE')}")
