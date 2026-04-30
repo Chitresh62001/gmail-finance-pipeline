@@ -93,7 +93,7 @@ def read_account(account_key, max_results=50):
     creds = authenticate(acc["token"])
     service = build("gmail", "v1", credentials=creds)
     # Fetch messages since April 1st
-    query = f"{acc['query']} after:2026/04/01"
+    query = f"{acc['query']} newer than:1d"
     results = service.users().messages().list(
         userId="me",
         q=query,
