@@ -22,19 +22,24 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
 
     if not text:
         return {"amount": None, "counterparty": None, "mode": None}
-
+    
     original_text = text
+    original_text = re.sub(r"[,\n]+", " ", original_text)
+    original_text = re.sub(r"\s+", " ", original_text)
     text = text.lower()
 
     # -------------------------
     # Amount (common)
     # -------------------------
     amount = None
-    if intent != 'INVESTMENT_DEBIT':
+    if intent == 'BANK_CREDIT':
+        m = re.search(r"inr\s+([\d,]+(?:\.\d{1,2})?)", text)
+        if m:
+            intent = "SALARY_CREDIT"
+        else:
+            m = re.search(r"rs.?\s*([\d,]+(?:\.\d{1,2})?)", text)
+    elif intent != 'INVESTMENT_DEBIT':
         m = re.search(r"rs.?\s*([\d,]+(?:\.\d{1,2})?)", text)
-    elif intent == 'BANK_CREDIT':
-        m = re.search(r"inr\s([\d,]+(?:\.\d{1,2})?)", text)
-        ## OVERRIDE INTENT WITH SALARY_CREDIT
     else:
         m = None
 
@@ -47,13 +52,14 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
     # -------------------------
     if intent == 'UPI_DEBIT':
         upi_match = re.search(
-            r"to\s+[a-z0-9.\-_]+@[a-z]+\s+([A-Za-z0-9.\-_ ]+?)\s+on\s+\d{1,2}",
-            original_text
+            r"to\s+[A-Za-z0-9.\-_]+@[a-zA-Z]+\s+([A-Za-z0-9.\-_ ]+?)\s+on\s+\d{1,2}",
+            original_text,re.IGNORECASE
         )
+
         if upi_match:
             name = upi_match.group(1)
             name = re.sub(r"\s+", " ", name).strip()
-            
+
             return {
                 "amount": amount,
                 "counterparty": name,
@@ -62,13 +68,14 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
             }
         else:
             upi_match = re.search(
-            r"to\s+(?:VPA\s+)?([a-zA-Z0-9.\-_]+@[a-zA-Z]+)\s+([A-Z ]+?)\s+on\s+\d{2}-\d{2}-\d{2}",
+            r"to\s+vpa\s+([a-zA-Z0-9.\-_]+@[a-zA-Z]+)\s+([A-Za-z ]+?)\s+on\s+\d{2}-\d{2}-\d{2}",
             original_text,
             re.IGNORECASE
             )
             if upi_match:
                 name = upi_match.group(2)
                 name = re.sub(r"\s+", " ", name).strip()
+
                 return {
                     "amount": amount,
                     "counterparty": name,
@@ -149,14 +156,23 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
         }
 
     if intent == 'BANK_CREDIT':
+        original_text = re.sub(r"[,\n]+", " ", original_text)
+        original_text = re.sub(r"\s+", " ", original_text)
         bank_match = re.search(
-            r"by\s+([a-zA-Z]+)\s+[a-zA-Z0-9.\-_]+@[a-zA-Z]+\s+([A-Z ]+?)\s+on\s+\d{2}-\d{2}-\d{2}",
+            r"by\s+([a-zA-Z]+)\s+[a-zA-Z0-9.\-_]+@[a-zA-Z]+\s+([A-Za-z ]+?)\s+on\s+\d{2}-\d{2}-\d{2}",
             original_text
         )
+
         if bank_match:
             counterparty = bank_match.group(2)
             mode = bank_match.group(1)
             counterparty = re.sub(r"\s+"," ",counterparty).strip()
+            data = {
+                "amount":amount,
+                "counterparty":counterparty,
+                "mode":mode,
+                "intent" : intent
+            }
             return {
                 "amount":amount,
                 "counterparty":counterparty,
@@ -166,12 +182,16 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
 
     if intent == 'SALARY_CREDIT':
         # extract salary amount
-        salary_match = re.search(r"rs.\s+inr\s([\d,]+(?:\.\d{1,2})?)", text)
+        original_text = re.sub(r"[,\n]+", " ", original_text)
+        original_text = re.sub(r"\s+", " ", original_text)
+        salary_match = re.search(r"rs.\s+inr\s([\d,]+(?:\.\d{1,2})?).*?on\s+\d{2}-\d{2}-\d{2}.*?from\s+([A-Za-z ]+)", original_text,re.IGNORECASE)
+        print(salary_match)
         if salary_match:
             salary_amount = float(salary_match.group(1).replace(",", ""))
+            counterparty = salary_match.group(2).strip()
             return {
                 "amount": salary_amount,
-                "counterparty": "SALARY",
+                "counterparty": counterparty,
                 "mode": "CREDIT",
                 "intent" : intent
             }
@@ -202,8 +222,16 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
 
 if __name__ == '__main__':
     text = """
-    Rs.150.00 has been debited from 
-    your HDFC Bank RuPay Credit Card XX5755 to 
-    paytmqr6vilu1@ptys Mr. SURAJ SANJAY KATE on 26-04-26
+    Your salary of Rs. INR 12345
+    has been added in your account
+    ending with XX5678 on 26-04-26
+    from CDAC-CDAC
     """
-    extract_transaction_details(text=text ,intent= 'UPI_DEBIT')
+    text2 = """
+    Dear Customer, Rs. 5123 has
+    been debited from 
+    account **1235 to VPA
+    123344-2@YBL RTYFHGVB UI 
+    NM on 02-05-24
+    """
+    extract_transaction_details(text=text2 ,intent= 'UPI_DEBIT')
