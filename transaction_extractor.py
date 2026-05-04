@@ -59,7 +59,6 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
         if upi_match:
             name = upi_match.group(1)
             name = re.sub(r"\s+", " ", name).strip()
-
             return {
                 "amount": amount,
                 "counterparty": name,
@@ -68,7 +67,7 @@ def extract_transaction_details(text: str,intent : str) -> Dict[str, Optional[st
             }
         else:
             upi_match = re.search(
-            r"to\s+vpa\s+([a-zA-Z0-9.\-_]+@[a-zA-Z]+)\s+([A-Za-z ]+?)\s+on\s+\d{2}-\d{2}-\d{2}",
+            r"vpa\s+([a-zA-Z0-9.\-_]+@[a-zA-Z]+)\s+([A-Za-z ]+?)\s+on\s+\d{2}-\d{2}-\d{2}",
             original_text,
             re.IGNORECASE
             )
@@ -228,10 +227,10 @@ if __name__ == '__main__':
     from CDAC-CDAC
     """
     text2 = """
-    Dear Customer, Rs. 5123 has
+    Dear Customer, Rs.5123 has
     been debited from 
-    account **1235 to VPA
-    123344-2@YBL RTYFHGVB UI 
+    account 1235 to VPA
+    q001766243@ybl RTYFHGVB UI 
     NM on 02-05-24
     """
     extract_transaction_details(text=text2 ,intent= 'UPI_DEBIT')

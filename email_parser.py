@@ -120,6 +120,8 @@ def read_account(account_key, max_results=50):
                 continue
                 
             counterparty = transaction_details.get('counterparty') or "Unknown"
+
+        
             
             data = {
                 "Account": account_key.upper(),
@@ -136,7 +138,6 @@ def read_account(account_key, max_results=50):
 
         # ✅ SEND EACH MESSAGE
             send_transaction(data)
-
             #txn_data.append(data)
 
     return txn_data
