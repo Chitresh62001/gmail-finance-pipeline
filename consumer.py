@@ -37,8 +37,10 @@ for msg in consumer:
             data.get("Date")
         ))
     except psycopg2.errors.UniqueViolation as e:
+        conn.rollback()
         print(e)
     except Exception as e:
+        conn.rollback()
         print(e)
 
     conn.commit()

@@ -3,6 +3,7 @@ services:
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     container_name: kafka
+    restart: always
     ports:
       - "9092:9092"
     environment:
@@ -24,7 +25,8 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-
+    volumes:
+      - kafka_data:/var/lib/kafka/data
   postgres:
     image: postgres:15
     container_name: postgres
@@ -43,3 +45,5 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "5050:80"
+volumes:
+  kafka_data:
