@@ -48,7 +48,7 @@ export default function TransactionList({ transactions, loading, isDebitTxn }) {
               {transactions.map((t, idx) => {
                 const dateStr = String(t.txn_date).split('T')[0]
                 const rawAmount = t.amount
-                const intentKey = (t.intent || '').toLowerCase().replace(/ /g, '_')
+                const intentKey = (t.categories || '').toLowerCase().replace(/ /g, '_')
                 const isDebit = isDebitTxn(t)
 
                 return (
